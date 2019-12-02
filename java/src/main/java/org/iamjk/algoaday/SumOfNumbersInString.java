@@ -40,9 +40,23 @@ public class SumOfNumbersInString {
     private static final String NUMERIC_REGEX = "[^0-9]";
     private static final String SPACE = " ";
 
-    Integer sumOfAllNumbersInString(String alphaNumeric) {
+    private final int minimumInputSize;
+    private final int maximumInputSize;
+
+    public SumOfNumbersInString(final int minimumInputSize, final int maximumInputSize) {
+        this.minimumInputSize = minimumInputSize;
+        this.maximumInputSize = maximumInputSize;
+    }
+
+    Long sumOfAllNumbersInString(String alphaNumeric) {
+        validateInput(alphaNumeric);
         final String[] numericOrSpacesOnly = alphaNumeric.replaceAll(NUMERIC_REGEX, SPACE).split(SPACE);
         return Stream.of(numericOrSpacesOnly).filter(numericOrSpaces -> numericOrSpaces.trim().length() > 0)
-                .map(Integer::parseInt).reduce(0, Integer::sum);
+                .map(Long::parseLong).reduce(0L, Long::sum);
+    }
+
+    private void validateInput(final String alphaNumeric) {
+        assert alphaNumeric != null : "Input string cannot be null";
+        assert alphaNumeric.length() >= minimumInputSize && alphaNumeric.length() <= maximumInputSize : "Input string length is out of range";
     }
 }
